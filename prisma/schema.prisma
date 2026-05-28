@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SourceType {
+  RSS
+  YOUTUBE
+  PODCAST
+  PRANKCAST
+  LOCAL
+}
+
+enum ImportStatus {
+  PENDING
+  RUNNING
+  SKIPPED
+  SUCCEEDED
+  FAILED
+}
+
+model Episode {
+  id                   String                 @id @default(cuid())
+  slug                 String                 @unique
+  title                String
+  description          String                 @db.Text
+  publishedAt          DateTime
+  durationSeconds      Int
+  sourceType           SourceType
+  sourceUrl            String
+  audioUrl             String?
+  artworkUrl           String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  transcript           TranscriptSegment[]
+  quotes               Quote[]
+  episodeTags          EpisodeTag[]
+  episodeGuests        EpisodeGuest[]
+  transcriptImportAudit TranscriptImportAudit?
+}
+
+model TranscriptSegment {
+  id           String   @id @default(cuid())
+  episodeId    String
+  startSeconds Int
+  endSeconds   Int
+  speaker      String?
+  text         String   @db.Text
+  redactedText String   @db.Text
+  searchText   String   @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  episode      Episode  @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  quotes       Quote[]
+
+  @@index([episodeId, startSeconds])
+}
+
+model Quote {
+  id                  String             @id @default(cuid())
+  episodeId           String
+  transcriptSegmentId String?
+  startSeconds        Int
+  endSeconds          Int
+  text                String             @db.Text
+  context             String?            @db.Text
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  episode             Episode            @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  transcriptSegment   TranscriptSegment? @relation(fields: [transcriptSegmentId], references: [id], onDelete: SetNull)
+  quoteTags           QuoteTag[]
+
+  @@index([episodeId, startSeconds])
+}
+
+model Tag {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  slug        String      @unique
+  episodeTags EpisodeTag[]
+  quoteTags   QuoteTag[]
+}
+
+model EpisodeTag {
+  episodeId String
+  tagId     String
+  episode   Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([episodeId, tagId])
+}
+
+model QuoteTag {
+  quoteId String
+  tagId   String
+  quote   Quote @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  tag     Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([quoteId, tagId])
+}
+
+model Guest {
+  id           String         @id @default(cuid())
+  name         String         @unique
+  slug         String         @unique
+  episodeGuests EpisodeGuest[]
+}
+
+model EpisodeGuest {
+  episodeId String
+  guestId   String
+  episode   Episode @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  guest     Guest   @relation(fields: [guestId], references: [id], onDelete: Cascade)
+
+  @@id([episodeId, guestId])
+}
+
+model AdminImportJob {
+  id           String       @id @default(cuid())
+  sourceType   SourceType
+  sourceUrl    String
+  status       ImportStatus @default(PENDING)
+  errorMessage String?      @db.Text
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model TranscriptImportAudit {
+  episodeId            String       @id
+  status               ImportStatus @default(PENDING)
+  message              String?      @db.Text
+  transcriptSegmentCount Int        @default(0)
+  lastAttemptedAt      DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  episode              Episode      @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+}
