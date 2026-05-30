@@ -16,7 +16,7 @@ async function main() {
   await prisma.adminImportJob.deleteMany();
 
   const tags = await Promise.all(
-    ["corn down", "payphone", "ivr", "chaos", "callbacks"].map((name) =>
+    ["corndown", "payphone", "ivr", "chaos", "callbacks"].map((name) =>
       prisma.tag.create({ data: { name, slug: slugify(name) } }),
     ),
   );
@@ -29,7 +29,7 @@ async function main() {
 
   const seeds = [
     {
-      title: "CORN DOWN 101: Placeholder Harvest",
+      title: "CORNDOWN 101: Placeholder Harvest",
       description:
         "Sample archival entry with placeholder metadata, redaction-safe transcript snippets, and audio deep links.",
       publishedAt: new Date("2024-09-14T19:00:00Z"),
@@ -38,21 +38,21 @@ async function main() {
       sourceUrl: "https://example.com/public/placeholder-harvest",
       audioUrl: "https://example.com/public/audio/placeholder-harvest.mp3",
       artworkUrl: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=1200&q=80",
-      tags: ["corn down", "ivr", "chaos"],
+      tags: ["corndown", "ivr", "chaos"],
       guests: ["dragonmere", "wastedmemory"],
       transcript: [
-        ["dragonmere", 12, 32, "Welcome back to CORN DOWN, the archival-safe edition of total confusion."],
+        ["dragonmere", 12, 32, "Welcome back to CORNDOWN, the archival-safe edition of total confusion."],
         ["wastedmemory", 33, 55, "If the menu says press seven for sales, we are absolutely pressing every other button first."],
         ["dragonmere", 510, 548, "Please note that any phone numbers in this archive are redacted before publication."],
         ["operator", 1980, 2012, "I cannot give out that information, and honestly I do not know why you keep asking about corn futures."],
       ] as const,
       quotes: [
         [33, 55, "If the menu says press seven for sales, we are absolutely pressing every other button first.", "Classic menu sabotage opener.", ["ivr", "chaos"]],
-        [1980, 2012, "I cannot give out that information, and honestly I do not know why you keep asking about corn futures.", "Perfect deadpan resistance.", ["corn down"]],
+        [1980, 2012, "I cannot give out that information, and honestly I do not know why you keep asking about corn futures.", "Perfect deadpan resistance.", ["corndown"]],
       ] as const,
     },
     {
-      title: "CORN DOWN 102: Silo Static",
+      title: "CORNDOWN 102: Silo Static",
       description:
         "Another seeded example with transcript highlights, guest metadata, and searchable quote snippets.",
       publishedAt: new Date("2024-10-03T19:00:00Z"),

@@ -14,7 +14,7 @@ export default async function HomePage() {
       <section className="rounded-[36px] border border-[var(--line)] bg-[color:rgba(16,19,22,0.85)] p-8">
         <p className="mb-3 text-sm uppercase tracking-[0.3em] text-[var(--accent)]">Retro Prank-Call Archive</p>
         <h1 className="max-w-4xl text-4xl font-black uppercase leading-tight md:text-6xl">
-          Search quotes, transcripts, guests, and timestamps from public dragonmere / CORN DOWN episodes.
+          Search quotes, transcripts, guests, and timestamps from public dragonmere / CORNDOWN episodes.
         </h1>
         <p className="mt-5 max-w-3xl text-base leading-7 text-[var(--muted)]">
           This fan archive indexes public episodes only. Sensitive info is redacted before publishing, transcripts may be imperfect,

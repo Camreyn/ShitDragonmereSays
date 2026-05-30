@@ -36,7 +36,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <QuickFilter href={`/search?q=${encodeURIComponent(q)}&exact=true`} label="Exact phrase" />
           <QuickFilter href={`/search?q=${encodeURIComponent(q)}&source=YOUTUBE`} label="YouTube only" />
           <QuickFilter href={`/search?q=${encodeURIComponent(q)}&source=PODCAST`} label="Podcast only" />
-          <QuickFilter href={`/search?q=${encodeURIComponent(q)}&tag=corn-down`} label="#corn down" />
+          <QuickFilter href={`/search?q=${encodeURIComponent(q)}&tag=corndown`} label="#corndown" />
           <QuickFilter href={`/search?q=${encodeURIComponent(q)}&speaker=dragonmere`} label="speaker: dragonmere" />
           <QuickFilter href={`/search?q=${encodeURIComponent(q)}&speaker=wastedmemory`} label="speaker: wastedmemory" />
         </div>

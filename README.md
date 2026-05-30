@@ -1,6 +1,6 @@
 # Shit Dragonmere Says
 
-Searchable fan archive for public dragonmere / CORN DOWN prank-call content, built as a redaction-first transcript, quote, and audio index.
+Searchable fan archive for public dragonmere / CORNDOWN prank-call content, built as a redaction-first transcript, quote, and audio index.
 
 ## Guardrails
 

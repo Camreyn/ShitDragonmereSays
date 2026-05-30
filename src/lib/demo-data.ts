@@ -17,8 +17,8 @@ type DemoQuote = {
 export const demoEpisodes: EpisodeWithRelations[] = [
   {
     id: "ep-1",
-    slug: "corn-down-101-placeholder-harvest",
-    title: "CORN DOWN 101: Placeholder Harvest",
+    slug: "corndown-101-placeholder-harvest",
+    title: "CORNDOWN 101: Placeholder Harvest",
     description: "Sample archival entry with placeholder metadata, redaction-safe transcript snippets, and audio deep links.",
     publishedAt: new Date("2024-09-14T19:00:00Z"),
     durationSeconds: 4125,
@@ -29,7 +29,7 @@ export const demoEpisodes: EpisodeWithRelations[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
     episodeTags: [
-      { tag: { id: "tag-1", name: "corn down", slug: "corn-down" } },
+      { tag: { id: "tag-1", name: "corndown", slug: "corndown" } },
       { tag: { id: "tag-2", name: "ivr", slug: "ivr" } },
       { tag: { id: "tag-3", name: "chaos", slug: "chaos" } },
     ],
@@ -41,9 +41,9 @@ export const demoEpisodes: EpisodeWithRelations[] = [
         startSeconds: 12,
         endSeconds: 32,
         speaker: "dragonmere",
-        text: "Welcome back to CORN DOWN, the archival-safe edition of total confusion.",
-        redactedText: "Welcome back to CORN DOWN, the archival-safe edition of total confusion.",
-        searchText: "dragonmere Welcome back to CORN DOWN, the archival-safe edition of total confusion.",
+        text: "Welcome back to CORNDOWN, the archival-safe edition of total confusion.",
+        redactedText: "Welcome back to CORNDOWN, the archival-safe edition of total confusion.",
+        searchText: "dragonmere Welcome back to CORNDOWN, the archival-safe edition of total confusion.",
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -89,8 +89,8 @@ export const demoEpisodes: EpisodeWithRelations[] = [
   },
   {
     id: "ep-2",
-    slug: "corn-down-102-silo-static",
-    title: "CORN DOWN 102: Silo Static",
+    slug: "corndown-102-silo-static",
+    title: "CORNDOWN 102: Silo Static",
     description: "Another seeded example with transcript highlights, guest metadata, and searchable quote snippets.",
     publishedAt: new Date("2024-10-03T19:00:00Z"),
     durationSeconds: 3894,
