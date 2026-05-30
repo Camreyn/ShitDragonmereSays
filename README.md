@@ -2,6 +2,8 @@
 
 Searchable fan archive for public dragonmere / CORNDOWN prank-call content, built as a redaction-first transcript, quote, and audio index.
 
+Technical implementation details live in [docs/TECHNICAL.md](docs/TECHNICAL.md).
+
 ## Guardrails
 
 - Public sources only. Do not ingest private, paywalled, or unauthorized material.

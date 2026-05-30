@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/badge";
+import { EpisodePlayButton } from "@/components/episode-play-button";
 import { QuoteCard } from "@/components/quote-card";
 import { SectionCard } from "@/components/section-card";
 import { TranscriptViewer } from "@/components/transcript-viewer";
@@ -46,6 +47,21 @@ export default async function EpisodeDetailPage({ params, searchParams }: Episod
             </Link>
           ) : null}
         </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <EpisodePlayButton
+            episode={{
+              slug: episode.slug,
+              title: episode.title,
+              sourceType: episode.sourceType,
+              sourceUrl: episode.sourceUrl,
+              audioUrl: episode.audioUrl,
+            }}
+            startAt={startAt}
+          />
+          <Link href={episode.sourceUrl} className="inline-flex rounded-full border border-[var(--line)] px-4 py-2 text-sm text-[var(--muted)] hover:border-[var(--accent)] hover:text-[var(--text)]">
+            Open source
+          </Link>
+        </div>
         <p className="mt-5 text-sm text-[var(--danger)]">
           Warning: transcripts may contain redactions and imperfect auto-transcription. Do not use this archive to identify or target call recipients.
         </p>
@@ -53,7 +69,13 @@ export default async function EpisodeDetailPage({ params, searchParams }: Episod
 
       <SectionCard title="Transcript">
         <TranscriptViewer
-          episode={{ slug: episode.slug, title: episode.title, audioUrl: episode.audioUrl }}
+          episode={{
+            slug: episode.slug,
+            title: episode.title,
+            sourceType: episode.sourceType,
+            sourceUrl: episode.sourceUrl,
+            audioUrl: episode.audioUrl,
+          }}
           segments={episode.transcript ?? []}
           query={query}
           startAt={startAt}

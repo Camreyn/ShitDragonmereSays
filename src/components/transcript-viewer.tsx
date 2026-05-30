@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { buildPlaybackTrack } from "@/lib/playback";
 import { formatTimestamp } from "@/lib/timestamps";
 import { useAudioPlayer } from "./audio-player-provider";
 import { HighlightedText } from "./highlighted-text";
@@ -17,6 +18,8 @@ type TranscriptViewerProps = {
   episode: {
     slug: string;
     title: string;
+    sourceType: "RSS" | "YOUTUBE" | "PODCAST" | "PRANKCAST" | "LOCAL";
+    sourceUrl: string;
     audioUrl: string | null;
   };
   segments: Segment[];
@@ -26,6 +29,7 @@ type TranscriptViewerProps = {
 
 export function TranscriptViewer({ episode, segments, query, startAt = 0 }: TranscriptViewerProps) {
   const { currentTime, setTrack, seekTo, track } = useAudioPlayer();
+  const playbackTrack = buildPlaybackTrack(episode);
 
   const activeId = useMemo(
     () => segments.find((segment) => currentTime >= segment.startSeconds && currentTime < segment.endSeconds)?.id,
@@ -43,9 +47,9 @@ export function TranscriptViewer({ episode, segments, query, startAt = 0 }: Tran
         >
           <button
             onClick={() => {
-              if (episode.audioUrl) {
+              if (playbackTrack) {
                 if (track?.slug !== episode.slug) {
-                  setTrack({ title: episode.title, audioUrl: episode.audioUrl, slug: episode.slug }, segment.startSeconds || startAt);
+                  setTrack(playbackTrack, segment.startSeconds || startAt);
                 } else {
                   seekTo(segment.startSeconds);
                 }
