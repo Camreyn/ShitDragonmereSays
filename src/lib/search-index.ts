@@ -10,10 +10,9 @@ export async function indexSearchDocuments() {
     apiKey: process.env.MEILISEARCH_API_KEY,
   });
 
-  const [episodes, quotes, segments] = await Promise.all([
+  const [episodes, quotes] = await Promise.all([
     prisma.episode.findMany({ include: { episodeTags: { include: { tag: true } }, episodeGuests: { include: { guest: true } } } }),
     prisma.quote.findMany({ include: { episode: true, quoteTags: { include: { tag: true } } } }),
-    prisma.transcriptSegment.findMany({ include: { episode: true } }),
   ]);
 
   await client.index("episodes").addDocuments(
@@ -40,14 +39,31 @@ export async function indexSearchDocuments() {
     })),
   );
 
-  await client.index("transcript_segments").addDocuments(
-    segments.map((segment) => ({
-      id: segment.id,
-      episodeSlug: segment.episode.slug,
-      speaker: segment.speaker,
-      text: segment.redactedText,
-      startSeconds: segment.startSeconds,
-      timestamp: formatTimestamp(segment.startSeconds),
-    })),
-  );
+  const transcriptIndex = client.index("transcript_segments");
+  let cursor: string | undefined;
+  const pageSize = 500;
+
+  for (;;) {
+    const segments = await prisma.transcriptSegment.findMany({
+      take: pageSize,
+      ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
+      orderBy: { id: "asc" },
+      include: { episode: { select: { slug: true } } },
+    });
+
+    if (!segments.length) break;
+
+    await transcriptIndex.addDocuments(
+      segments.map((segment) => ({
+        id: segment.id,
+        episodeSlug: segment.episode.slug,
+        speaker: segment.speaker,
+        text: segment.redactedText,
+        startSeconds: segment.startSeconds,
+        timestamp: formatTimestamp(segment.startSeconds),
+      })),
+    );
+
+    cursor = segments[segments.length - 1]?.id;
+  }
 }
